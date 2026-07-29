@@ -5,10 +5,14 @@ Elias-Fano-style encoders exploit small gaps between consecutive sorted
 neighbor ids, so a permutation that clusters each node's neighbors around
 its own id (bandwidth minimization) directly improves compression.
 
-Two strategies:
-  rcm  Reverse Cuthill-McKee on the symmetrized adjacency matrix
-  bfs  BFS visit order from a start node -- a cheap approximation of
-       Cuthill-McKee (same idea, no by-degree tie-breaking)
+Three strategies:
+  rcm     Reverse Cuthill-McKee on the symmetrized adjacency matrix
+  bfs     BFS visit order from a start node -- a cheap approximation of
+          Cuthill-McKee (same idea, no by-degree tie-breaking)
+  cm-dir  Cuthill-McKee over the directed graph: BFS following out-edges
+          only, enqueuing each node's unvisited out-neighbors in order of
+          increasing out-degree (no standard directed C-M exists; this
+          transplants its by-degree tie-breaking onto the directed BFS)
 
 Reads <prefix>_offsets.bin / <prefix>_neighbors.bin, writes the same pair
 under <out-prefix>, plus <out-prefix>_stats.json with gap statistics.
@@ -17,6 +21,7 @@ under <out-prefix>, plus <out-prefix>_stats.json with gap statistics.
 import argparse
 import json
 import time
+from collections import deque
 
 import numpy as np
 from scipy.sparse import csr_matrix
@@ -54,6 +59,39 @@ def bfs_permutation(A, start: int):
         rest = np.flatnonzero(~seen)
         print(f"BFS reached {len(order)} nodes; appending {len(rest)} unreached")
         order = np.concatenate([order, rest])
+    return order
+
+
+def cm_directed_permutation(offsets, neighbors, start: int):
+    """Cuthill-McKee transplanted onto the directed graph: BFS over
+    out-edges, children enqueued by increasing out-degree. Unreached
+    components are entered at their minimum-out-degree node, per C-M
+    convention."""
+    N = len(offsets) - 1
+    deg = np.diff(offsets)
+    visited = np.zeros(N, dtype=bool)
+    order = np.empty(N, dtype=np.int64)
+    pos = 0
+    q = deque()
+    visited[start] = True
+    q.append(start)
+    while pos < N:
+        while q:
+            u = q.popleft()
+            order[pos] = u
+            pos += 1
+            nbrs = neighbors[offsets[u]:offsets[u + 1]]
+            fresh = nbrs[~visited[nbrs]]
+            if len(fresh):
+                fresh = fresh[np.argsort(deg[fresh], kind="stable")]
+                visited[fresh] = True
+                q.extend(fresh.tolist())
+        if pos < N:
+            rest = np.flatnonzero(~visited)
+            s = rest[np.argmin(deg[rest])]
+            print(f"cm-dir: {N - pos} nodes unreached; continuing from {s}")
+            visited[s] = True
+            q.append(s)
     return order
 
 
@@ -95,19 +133,20 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--prefix", required=True, help="Input CSR prefix")
     parser.add_argument("--out-prefix", required=True, help="Output CSR prefix")
-    parser.add_argument("--strategy", choices=["rcm", "bfs"], required=True)
+    parser.add_argument("--strategy", choices=["rcm", "bfs", "cm-dir"], required=True)
     parser.add_argument("--start", type=int, default=0,
-                        help="BFS start node (e.g. the DiskANN entry point)")
+                        help="Start node for bfs/cm-dir (e.g. the graph entry point)")
     args = parser.parse_args()
 
     offsets, neighbors = load_csr(args.prefix)
-    A = as_scipy(offsets, neighbors)
 
     t0 = time.time()
     if args.strategy == "rcm":
-        perm = rcm_permutation(A)
+        perm = rcm_permutation(as_scipy(offsets, neighbors))
+    elif args.strategy == "bfs":
+        perm = bfs_permutation(as_scipy(offsets, neighbors), args.start)
     else:
-        perm = bfs_permutation(A, args.start)
+        perm = cm_directed_permutation(offsets, neighbors, args.start)
     t_perm = time.time() - t0
     print(f"{args.strategy} permutation computed in {t_perm:.1f}s")
 
@@ -120,7 +159,7 @@ def main():
 
     stats = {"strategy": args.strategy, "perm_seconds": t_perm,
              **gap_stats(new_offsets, new_neighbors)}
-    if args.strategy == "bfs":
+    if args.strategy in ("bfs", "cm-dir"):
         stats["start"] = args.start
     with open(f"{args.out_prefix}_stats.json", "w") as f:
         json.dump(stats, f, indent=1)
