@@ -1,0 +1,4 @@
+diskannpy
+numpy
+h5py
+faiss-cpu

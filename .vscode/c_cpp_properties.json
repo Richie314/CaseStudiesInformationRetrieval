@@ -4,8 +4,7 @@
             "name": "Windows",
             "includePath": [
                 "${workspaceFolder}\\src",
-                "${workspaceFolder}\\external",
-                "${workspaceFolder}\\external\\gef"
+                "${workspaceFolder}\\external\\gef\\include"
             ],
             "defines": [
             ],
@@ -18,8 +17,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/src",
-                "${workspaceFolder}/external",
-                "${workspaceFolder}/external/gef",
+                "${workspaceFolder}/external/gef/include",
                 "/usr/include",
                 "/usr/local/include"
             ],
