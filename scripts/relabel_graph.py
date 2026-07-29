@@ -81,7 +81,8 @@ def cm_directed_permutation(offsets, neighbors, start: int):
             order[pos] = u
             pos += 1
             nbrs = neighbors[offsets[u]:offsets[u + 1]]
-            fresh = nbrs[~visited[nbrs]]
+            # unique also dedupes: rows may repeat a neighbor (faiss NSG does)
+            fresh = np.unique(nbrs[~visited[nbrs]])
             if len(fresh):
                 fresh = fresh[np.argsort(deg[fresh], kind="stable")]
                 visited[fresh] = True
