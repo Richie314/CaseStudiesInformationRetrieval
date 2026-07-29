@@ -68,8 +68,10 @@ def main():
 
     row_ptr.tofile(f"{args.prefix}_offsets.bin")
     neighbors.tofile(f"{args.prefix}_neighbors.bin")
+    meta = {"N": int(N), "nnz": int(nnz), "sorted": not args.no_sort,
+            "start": int(index.nsg.enterpoint)}
     with open(f"{args.prefix}_meta.json", "w") as f:
-        json.dump({"N": int(N), "nnz": int(nnz), "sorted": not args.no_sort}, f, indent=2)
+        json.dump(meta, f, indent=2)
 
     print(f"Wrote {args.prefix}_offsets.bin ({row_ptr.nbytes} bytes raw)")
     print(f"Wrote {args.prefix}_neighbors.bin ({neighbors.nbytes} bytes raw)")
