@@ -16,4 +16,9 @@ python3 ./scripts/export_diskann_graph_for_gef.py --index ./data/sift_diskann_in
 
 ```bash
 cmake -S . -B build
+cmake --build build --target information_retrieval -- -j$(nproc)
+```
+
+```bash
+./build/information_retrieval ./data/graph
 ```
