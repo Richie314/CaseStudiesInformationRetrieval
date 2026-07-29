@@ -1,0 +1,67 @@
+<svg viewBox="0 0 720 306" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="degree-dist">
+<style>
+:root{--ink:#0b0b0b;--sec:#52514e;--mut:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--blue:#2a78d6;--gray:#898781}
+@media (prefers-color-scheme: dark){:root{--ink:#ffffff;--sec:#c3c2b7;--grid:#2c2c2a;--axis:#383835;--blue:#3987e5}}
+text{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.t{fill:var(--ink);font-size:15px;font-weight:600}
+.s{fill:var(--sec);font-size:12.5px}
+.m{fill:var(--mut);font-size:12px}
+.v{fill:var(--ink);font-size:13px}
+.grid{stroke:var(--grid);stroke-width:1}
+.axis{stroke:var(--axis);stroke-width:1}
+</style>
+<text class="t" x="16" y="28">Out-degree distribution</text>
+<text class="s" x="16" y="48">nodes per out-degree · R = 32 caps the degree; 43.6% of nodes sit at the cap</text>
+<line class="grid" x1="84" y1="262.0" x2="700" y2="262.0"/>
+<text class="m" x="76" y="266.0" text-anchor="end">0</text>
+<line class="grid" x1="84" y1="218.4" x2="700" y2="218.4"/>
+<text class="m" x="76" y="222.4" text-anchor="end">100k</text>
+<line class="grid" x1="84" y1="174.9" x2="700" y2="174.9"/>
+<text class="m" x="76" y="178.9" text-anchor="end">200k</text>
+<line class="grid" x1="84" y1="131.3" x2="700" y2="131.3"/>
+<text class="m" x="76" y="135.3" text-anchor="end">300k</text>
+<line class="grid" x1="84" y1="87.8" x2="700" y2="87.8"/>
+<text class="m" x="76" y="91.8" text-anchor="end">400k</text>
+<path d="M85.0 262.2 V262.1 Q85.0 262.0 85.1 262.0 H102.8 Q102.9 262.0 102.9 262.1 V262.2 Z" fill="var(--blue)"/>
+<text class="m" x="93.9" y="282" text-anchor="middle">2</text>
+<path d="M104.9 262.2 V262.1 Q104.9 262.0 105.0 262.0 H122.6 Q122.7 262.0 122.7 262.1 V262.2 Z" fill="var(--blue)"/>
+<path d="M124.7 262.2 V262.1 Q124.7 262.0 124.8 262.0 H142.5 Q142.6 262.0 142.6 262.1 V262.2 Z" fill="var(--blue)"/>
+<path d="M144.6 262.2 V262.1 Q144.6 262.0 144.7 262.0 H162.4 Q162.5 262.0 162.5 262.1 V262.2 Z" fill="var(--blue)"/>
+<text class="m" x="153.5" y="282" text-anchor="middle">5</text>
+<path d="M164.5 262.1 V262.0 Q164.5 261.9 164.6 261.9 H182.3 Q182.4 261.9 182.4 262.0 V262.1 Z" fill="var(--blue)"/>
+<path d="M184.4 262.0 V261.9 Q184.4 261.8 184.5 261.8 H202.1 Q202.2 261.8 202.2 261.9 V262.0 Z" fill="var(--blue)"/>
+<path d="M204.2 262.0 V261.8 Q204.2 261.6 204.4 261.6 H221.9 Q222.1 261.6 222.1 261.8 V262.0 Z" fill="var(--blue)"/>
+<path d="M224.1 262.0 V261.7 Q224.1 261.3 224.4 261.3 H241.6 Q242.0 261.3 242.0 261.7 V262.0 Z" fill="var(--blue)"/>
+<path d="M244.0 262.0 V261.5 Q244.0 261.0 244.5 261.0 H261.3 Q261.8 261.0 261.8 261.5 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="252.9" y="282" text-anchor="middle">10</text>
+<path d="M263.8 262.0 V261.3 Q263.8 260.5 264.6 260.5 H281.0 Q281.7 260.5 281.7 261.3 V262.0 Z" fill="var(--blue)"/>
+<path d="M283.7 262.0 V261.0 Q283.7 259.9 284.7 259.9 H300.6 Q301.6 259.9 301.6 261.0 V262.0 Z" fill="var(--blue)"/>
+<path d="M303.6 262.0 V260.6 Q303.6 259.2 305.0 259.2 H320.1 Q321.5 259.2 321.5 260.6 V262.0 Z" fill="var(--blue)"/>
+<path d="M323.5 262.0 V260.2 Q323.5 258.5 325.2 258.5 H339.6 Q341.3 258.5 341.3 260.2 V262.0 Z" fill="var(--blue)"/>
+<path d="M343.3 262.0 V259.8 Q343.3 257.6 345.5 257.6 H359.0 Q361.2 257.6 361.2 259.8 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="352.3" y="282" text-anchor="middle">15</text>
+<path d="M363.2 262.0 V259.3 Q363.2 256.6 365.9 256.6 H378.4 Q381.1 256.6 381.1 259.3 V262.0 Z" fill="var(--blue)"/>
+<path d="M383.1 262.0 V258.8 Q383.1 255.6 386.3 255.6 H397.7 Q400.9 255.6 400.9 258.8 V262.0 Z" fill="var(--blue)"/>
+<path d="M402.9 262.0 V258.3 Q402.9 254.6 406.7 254.6 H417.1 Q420.8 254.6 420.8 258.3 V262.0 Z" fill="var(--blue)"/>
+<path d="M422.8 262.0 V257.5 Q422.8 253.5 426.8 253.5 H436.7 Q440.7 253.5 440.7 257.5 V262.0 Z" fill="var(--blue)"/>
+<path d="M442.7 262.0 V256.4 Q442.7 252.4 446.7 252.4 H456.5 Q460.5 252.4 460.5 256.4 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="451.6" y="282" text-anchor="middle">20</text>
+<path d="M462.5 262.0 V255.1 Q462.5 251.1 466.5 251.1 H476.4 Q480.4 251.1 480.4 255.1 V262.0 Z" fill="var(--blue)"/>
+<path d="M482.4 262.0 V253.8 Q482.4 249.8 486.4 249.8 H496.3 Q500.3 249.8 500.3 253.8 V262.0 Z" fill="var(--blue)"/>
+<path d="M502.3 262.0 V252.7 Q502.3 248.7 506.3 248.7 H516.2 Q520.2 248.7 520.2 252.7 V262.0 Z" fill="var(--blue)"/>
+<path d="M522.2 262.0 V251.6 Q522.2 247.6 526.2 247.6 H536.0 Q540.0 247.6 540.0 251.6 V262.0 Z" fill="var(--blue)"/>
+<path d="M542.0 262.0 V250.5 Q542.0 246.5 546.0 246.5 H555.9 Q559.9 246.5 559.9 250.5 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="551.0" y="282" text-anchor="middle">25</text>
+<path d="M561.9 262.0 V248.9 Q561.9 244.9 565.9 244.9 H575.8 Q579.8 244.9 579.8 248.9 V262.0 Z" fill="var(--blue)"/>
+<path d="M581.8 262.0 V247.7 Q581.8 243.7 585.8 243.7 H595.6 Q599.6 243.7 599.6 247.7 V262.0 Z" fill="var(--blue)"/>
+<path d="M601.6 262.0 V246.4 Q601.6 242.4 605.6 242.4 H615.5 Q619.5 242.4 619.5 246.4 V262.0 Z" fill="var(--blue)"/>
+<path d="M621.5 262.0 V244.9 Q621.5 240.9 625.5 240.9 H635.4 Q639.4 240.9 639.4 244.9 V262.0 Z" fill="var(--blue)"/>
+<path d="M641.4 262.0 V242.7 Q641.4 238.7 645.4 238.7 H655.3 Q659.3 238.7 659.3 242.7 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="650.3" y="282" text-anchor="middle">30</text>
+<path d="M661.3 262.0 V240.2 Q661.3 236.2 665.3 236.2 H675.1 Q679.1 236.2 679.1 240.2 V262.0 Z" fill="var(--blue)"/>
+<path d="M681.1 262.0 V75.9 Q681.1 71.9 685.1 71.9 H695.0 Q699.0 71.9 699.0 75.9 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="690.1" y="282" text-anchor="middle">32</text>
+<line class="axis" x1="84" y1="262" x2="700" y2="262"/>
+<text class="v" x="689.1" y="63.9" text-anchor="middle">436k</text>
+<text class="m" x="392" y="299" text-anchor="middle">out-degree</text>
+</svg>

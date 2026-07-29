@@ -1,0 +1,45 @@
+<svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="space">
+<style>
+:root{--ink:#0b0b0b;--sec:#52514e;--mut:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--blue:#2a78d6;--gray:#898781}
+@media (prefers-color-scheme: dark){:root{--ink:#ffffff;--sec:#c3c2b7;--grid:#2c2c2a;--axis:#383835;--blue:#3987e5}}
+text{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.t{fill:var(--ink);font-size:15px;font-weight:600}
+.s{fill:var(--sec);font-size:12.5px}
+.m{fill:var(--mut);font-size:12px}
+.v{fill:var(--ink);font-size:13px}
+.grid{stroke:var(--grid);stroke-width:1}
+.axis{stroke:var(--axis);stroke-width:1}
+</style>
+<text class="t" x="16" y="28">Index space — raw CSR vs U-GEF</text>
+<text class="s" x="16" y="48">megabytes · optimal split point</text>
+<rect x="536" y="16" width="12" height="12" rx="2" fill="var(--gray)"/>
+<text class="s" x="554" y="27">Raw</text>
+<rect x="602" y="16" width="12" height="12" rx="2" fill="var(--blue)"/>
+<text class="s" x="620" y="27">U-GEF</text>
+<line class="grid" x1="150.0" y1="62" x2="150.0" y2="268"/>
+<text class="m" x="150.0" y="286" text-anchor="middle">0</text>
+<line class="grid" x1="267.5" y1="62" x2="267.5" y2="268"/>
+<text class="m" x="267.5" y="286" text-anchor="middle">30</text>
+<line class="grid" x1="385.0" y1="62" x2="385.0" y2="268"/>
+<text class="m" x="385.0" y="286" text-anchor="middle">60</text>
+<line class="grid" x1="502.5" y1="62" x2="502.5" y2="268"/>
+<text class="m" x="502.5" y="286" text-anchor="middle">90</text>
+<line class="grid" x1="620.0" y1="62" x2="620.0" y2="268"/>
+<text class="m" x="620.0" y="286" text-anchor="middle">120</text>
+<line class="axis" x1="150" y1="62" x2="150" y2="268"/>
+<text class="s" x="140" y="94" text-anchor="end">neighbors</text>
+<path d="M150.0 70.0 H581.7 Q585.7 70.0 585.7 74.0 V86.0 Q585.7 90.0 581.7 90.0 H150.0 Z" fill="var(--gray)"/>
+<text class="v" x="593.7" y="85">111.2 MB</text>
+<path d="M150.0 92.0 H390.4 Q394.4 92.0 394.4 96.0 V108.0 Q394.4 112.0 390.4 112.0 H150.0 Z" fill="var(--blue)"/>
+<text class="v" x="402.4" y="107">62.4 MB (56.1%)</text>
+<text class="s" x="140" y="162" text-anchor="end">offsets</text>
+<path d="M150.0 138.0 H177.3 Q181.3 138.0 181.3 142.0 V154.0 Q181.3 158.0 177.3 158.0 H150.0 Z" fill="var(--gray)"/>
+<text class="v" x="189.3" y="153">8.0 MB</text>
+<path d="M150.0 160.0 H151.9 Q153.9 160.0 153.9 161.9 V178.1 Q153.9 180.0 151.9 180.0 H150.0 Z" fill="var(--blue)"/>
+<text class="v" x="161.9" y="175">1.0 MB (12.4%)</text>
+<text class="s" x="140" y="230" text-anchor="end">total</text>
+<path d="M150.0 206.0 H613.0 Q617.0 206.0 617.0 210.0 V222.0 Q617.0 226.0 613.0 226.0 H150.0 Z" fill="var(--gray)"/>
+<text class="v" x="625.0" y="221">119.2 MB</text>
+<path d="M150.0 228.0 H394.3 Q398.3 228.0 398.3 232.0 V244.0 Q398.3 248.0 394.3 248.0 H150.0 Z" fill="var(--blue)"/>
+<text class="v" x="406.3" y="243">63.4 MB (53.2%)</text>
+</svg>

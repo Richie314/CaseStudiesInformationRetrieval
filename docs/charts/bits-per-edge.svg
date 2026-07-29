@@ -1,0 +1,34 @@
+<svg viewBox="0 0 720 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="bits-per-edge">
+<style>
+:root{--ink:#0b0b0b;--sec:#52514e;--mut:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--blue:#2a78d6;--gray:#898781}
+@media (prefers-color-scheme: dark){:root{--ink:#ffffff;--sec:#c3c2b7;--grid:#2c2c2a;--axis:#383835;--blue:#3987e5}}
+text{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.t{fill:var(--ink);font-size:15px;font-weight:600}
+.s{fill:var(--sec);font-size:12.5px}
+.m{fill:var(--mut);font-size:12px}
+.v{fill:var(--ink);font-size:13px}
+.grid{stroke:var(--grid);stroke-width:1}
+.axis{stroke:var(--axis);stroke-width:1}
+</style>
+<text class="t" x="16" y="28">Bits per edge — neighbors array</text>
+<text class="s" x="16" y="48">SIFT-1M DiskANN graph, 27.8M edges · lower is better</text>
+<line class="grid" x1="190.0" y1="66" x2="190.0" y2="176"/>
+<text class="m" x="190.0" y="194" text-anchor="middle">0</text>
+<line class="grid" x1="315.0" y1="66" x2="315.0" y2="176"/>
+<text class="m" x="315.0" y="194" text-anchor="middle">8</text>
+<line class="grid" x1="440.0" y1="66" x2="440.0" y2="176"/>
+<text class="m" x="440.0" y="194" text-anchor="middle">16</text>
+<line class="grid" x1="565.0" y1="66" x2="565.0" y2="176"/>
+<text class="m" x="565.0" y="194" text-anchor="middle">24</text>
+<line class="grid" x1="690.0" y1="66" x2="690.0" y2="176"/>
+<text class="m" x="690.0" y="194" text-anchor="middle">32</text>
+<line class="axis" x1="190" y1="66" x2="190" y2="176"/>
+<text class="s" x="180" y="90" text-anchor="end">Raw uint32</text>
+<path d="M190.0 72.0 H686.0 Q690.0 72.0 690.0 76.0 V94.0 Q690.0 98.0 686.0 98.0 H190.0 Z" fill="var(--gray)"/>
+<text class="v" x="682.0" y="90" text-anchor="end" fill="#ffffff">32.00</text>
+<text class="s" x="180" y="152" text-anchor="end">U-GEF</text>
+<path d="M190.0 134.0 H466.5 Q470.5 134.0 470.5 138.0 V156.0 Q470.5 160.0 466.5 160.0 H190.0 Z" fill="var(--blue)"/>
+<text class="v" x="478.5" y="152">17.95</text>
+<line x1="446.4" y1="58" x2="446.4" y2="176" stroke="var(--sec)" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text class="s" x="438.4" y="62" text-anchor="end">lower bound 16.41</text>
+</svg>

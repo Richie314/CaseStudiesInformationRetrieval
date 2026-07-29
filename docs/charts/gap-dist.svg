@@ -1,0 +1,59 @@
+<svg viewBox="0 0 720 306" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="gap-dist">
+<style>
+:root{--ink:#0b0b0b;--sec:#52514e;--mut:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--blue:#2a78d6;--gray:#898781}
+@media (prefers-color-scheme: dark){:root{--ink:#ffffff;--sec:#c3c2b7;--grid:#2c2c2a;--axis:#383835;--blue:#3987e5}}
+text{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.t{fill:var(--ink);font-size:15px;font-weight:600}
+.s{fill:var(--sec);font-size:12.5px}
+.m{fill:var(--mut);font-size:12px}
+.v{fill:var(--ink);font-size:13px}
+.grid{stroke:var(--grid);stroke-width:1}
+.axis{stroke:var(--axis);stroke-width:1}
+</style>
+<text class="t" x="16" y="28">Neighbor-id gap distribution</text>
+<text class="s" x="16" y="48">gaps between consecutive sorted neighbor ids, log&#8322; buckets · median ≈ 17.7k ≈ N / avg degree</text>
+<line class="grid" x1="84" y1="262.0" x2="700" y2="262.0"/>
+<text class="m" x="76" y="266.0" text-anchor="end">0</text>
+<line class="grid" x1="84" y1="226.4" x2="700" y2="226.4"/>
+<text class="m" x="76" y="230.4" text-anchor="end">1M</text>
+<line class="grid" x1="84" y1="190.7" x2="700" y2="190.7"/>
+<text class="m" x="76" y="194.7" text-anchor="end">2M</text>
+<line class="grid" x1="84" y1="155.1" x2="700" y2="155.1"/>
+<text class="m" x="76" y="159.1" text-anchor="end">3M</text>
+<line class="grid" x1="84" y1="119.5" x2="700" y2="119.5"/>
+<text class="m" x="76" y="123.5" text-anchor="end">4M</text>
+<line class="grid" x1="84" y1="83.8" x2="700" y2="83.8"/>
+<text class="m" x="76" y="87.8" text-anchor="end">5M</text>
+<path d="M86.0 262.0 V261.9 Q86.0 261.7 86.1 261.7 H112.7 Q112.8 261.7 112.8 261.9 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="99.4" y="282" text-anchor="middle">1</text>
+<path d="M116.8 262.0 V261.7 Q116.8 261.5 117.1 261.5 H143.3 Q143.6 261.5 143.6 261.7 V262.0 Z" fill="var(--blue)"/>
+<path d="M147.6 262.0 V261.6 Q147.6 261.1 148.0 261.1 H174.0 Q174.4 261.1 174.4 261.6 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="161.0" y="282" text-anchor="middle">4</text>
+<path d="M178.4 262.0 V261.2 Q178.4 260.4 179.2 260.4 H204.4 Q205.2 260.4 205.2 261.2 V262.0 Z" fill="var(--blue)"/>
+<path d="M209.2 262.0 V260.5 Q209.2 259.0 210.7 259.0 H234.5 Q236.0 259.0 236.0 260.5 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="222.6" y="282" text-anchor="middle">16</text>
+<path d="M240.0 262.0 V259.4 Q240.0 256.8 242.6 256.8 H264.2 Q266.8 256.8 266.8 259.4 V262.0 Z" fill="var(--blue)"/>
+<path d="M270.8 262.0 V256.9 Q270.8 252.9 274.8 252.9 H293.6 Q297.6 252.9 297.6 256.9 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="284.2" y="282" text-anchor="middle">64</text>
+<path d="M301.6 262.0 V251.2 Q301.6 247.2 305.6 247.2 H324.4 Q328.4 247.2 328.4 251.2 V262.0 Z" fill="var(--blue)"/>
+<path d="M332.4 262.0 V243.0 Q332.4 239.0 336.4 239.0 H355.2 Q359.2 239.0 359.2 243.0 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="345.8" y="282" text-anchor="middle">256</text>
+<path d="M363.2 262.0 V232.3 Q363.2 228.3 367.2 228.3 H386.0 Q390.0 228.3 390.0 232.3 V262.0 Z" fill="var(--blue)"/>
+<path d="M394.0 262.0 V217.8 Q394.0 213.8 398.0 213.8 H416.8 Q420.8 213.8 420.8 217.8 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="407.4" y="282" text-anchor="middle">1k</text>
+<path d="M424.8 262.0 V196.8 Q424.8 192.8 428.8 192.8 H447.6 Q451.6 192.8 451.6 196.8 V262.0 Z" fill="var(--blue)"/>
+<path d="M455.6 262.0 V164.1 Q455.6 160.1 459.6 160.1 H478.4 Q482.4 160.1 482.4 164.1 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="469.0" y="282" text-anchor="middle">4k</text>
+<path d="M486.4 262.0 V118.9 Q486.4 114.9 490.4 114.9 H509.2 Q513.2 114.9 513.2 118.9 V262.0 Z" fill="var(--blue)"/>
+<path d="M517.2 262.0 V82.8 Q517.2 78.8 521.2 78.8 H540.0 Q544.0 78.8 544.0 82.8 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="530.6" y="282" text-anchor="middle">16k</text>
+<path d="M548.0 262.0 V92.4 Q548.0 88.4 552.0 88.4 H570.8 Q574.8 88.4 574.8 92.4 V262.0 Z" fill="var(--blue)"/>
+<path d="M578.8 262.0 V160.9 Q578.8 156.9 582.8 156.9 H601.6 Q605.6 156.9 605.6 160.9 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="592.2" y="282" text-anchor="middle">64k</text>
+<path d="M609.6 262.0 V234.7 Q609.6 230.7 613.6 230.7 H632.4 Q636.4 230.7 636.4 234.7 V262.0 Z" fill="var(--blue)"/>
+<path d="M640.4 262.0 V260.2 Q640.4 258.5 642.2 258.5 H665.4 Q667.2 258.5 667.2 260.2 V262.0 Z" fill="var(--blue)"/>
+<text class="m" x="653.8" y="282" text-anchor="middle">256k</text>
+<path d="M671.2 262.1 V262.0 Q671.2 261.9 671.3 261.9 H697.9 Q698.0 261.9 698.0 262.0 V262.1 Z" fill="var(--blue)"/>
+<line class="axis" x1="84" y1="262" x2="700" y2="262"/>
+<text class="m" x="392" y="299" text-anchor="middle">gap size (bucket lower bound)</text>
+</svg>
