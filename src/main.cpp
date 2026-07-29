@@ -29,12 +29,14 @@ std::vector<T> read_raw_binary(const std::string& path) {
     return data;
 }
 
+// Compression ratio per Ferragina's convention: compressed size over
+// original size (smaller is better).
 void print_ratio(const char* label, size_t raw_bytes, size_t compressed_bytes) {
-    const double ratio = compressed_bytes > 0
-        ? static_cast<double>(raw_bytes) / static_cast<double>(compressed_bytes)
+    const double ratio = raw_bytes > 0
+        ? static_cast<double>(compressed_bytes) / static_cast<double>(raw_bytes)
         : 0.0;
-    std::printf("%-12s raw=%10zu B  compressed=%10zu B  ratio=%.2fx\n",
-                label, raw_bytes, compressed_bytes, ratio);
+    std::printf("%-12s raw=%10zu B  compressed=%10zu B  ratio=%.4f (%.2f%%)\n",
+                label, raw_bytes, compressed_bytes, ratio, ratio * 100.0);
 }
 
 int run(int argc, char** argv) {
