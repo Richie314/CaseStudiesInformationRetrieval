@@ -13,8 +13,8 @@ def extract_nsg_adjacency(index) -> tuple[np.ndarray, np.ndarray]:
 
     Returns
     -------
-    adj : (N, K) int32 array. adj[i, j] is the j-th neighbor of node i, or
-          a value >= N for an unused/padding slot (out-degree < K).
+    adj : (N, K) int32 array. adj[i, j] is the j-th neighbor of node i;
+          unused/padding slots hold -1 (or any value outside [0, N)).
     N   : number of nodes (== index.ntotal)
     """
     if not hasattr(index, "nsg"):
@@ -39,7 +39,7 @@ def adjacency_to_csr(adj: np.ndarray, N: int, sort_rows: bool = True):
     total = 0
     for i in range(N):
         row = adj[i]
-        valid = row[row < N].astype(np.uint32)
+        valid = row[(row >= 0) & (row < N)].astype(np.uint32)
         if sort_rows:
             valid = np.sort(valid)
         rows.append(valid)
