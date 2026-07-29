@@ -18,8 +18,10 @@ Results for SIFT-1M are summarized in [REPORT.md](REPORT.md).
 | [src/main.cpp](src/main.cpp) | Loads the CSR graph, compresses it with `gef::U_GEF`, prints ratios, verifies a full round-trip, serializes the compressed structures |
 | [scripts/diskann-index.py](scripts/diskann-index.py) | Builds an in-memory DiskANN (Vamana) index over an ann-benchmarks HDF5 file |
 | [scripts/export_diskann_graph.py](scripts/export_diskann_graph.py) | Parses the DiskANN graph file and writes it as raw CSR (`*_offsets.bin`, `*_neighbors.bin`) |
-| [scripts/relabel_graph.py](scripts/relabel_graph.py) | Bandwidth-reducing id relabelings (Reverse Cuthill-McKee / BFS order) for better compression |
+| [scripts/relabel_graph.py](scripts/relabel_graph.py) | Bandwidth-reducing id relabelings (Reverse Cuthill-McKee, BFS order, directed C-M) for better compression |
 | [scripts/nsg-index.py](scripts/nsg-index.py) | Alternative graph builder: faiss NSG |
+| [scripts/hnsw-index.py](scripts/hnsw-index.py) | Alternative graph builder: faiss HNSW, exports the base layer as CSR |
+| [scripts/run_experiments.py](scripts/run_experiments.py) | Sweep driver: every relabeling × every graph → JSON + markdown results |
 | [scripts/export_nsg_graph.py](scripts/export_nsg_graph.py) | CSR export for the faiss NSG graph |
 | [external/gef](external/gef) | Git submodule: the GEF compression library (C++20) |
 | `data/` | Datasets, indexes, and exported graphs (git-ignored) |
