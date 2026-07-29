@@ -2,13 +2,15 @@
 
 **TL;DR:** U-GEF stores the DiskANN proximity graph in **53.2% of its raw CSR
 size** — **18.24 bits/edge** against 34.30 raw — while keeping O(1) random
-access. Relabeling node ids by **BFS order from the entry point** improves
-this to **50.5% (17.31 bits/edge total, 17.03 for neighbors)**, beating a
-Reverse Cuthill-McKee relabeling and landing within **3.8%** of the
-order-oblivious lower bound for the neighbors array. The adjacency data of a
-well-built ANN graph is close to incompressible under any id assignment: its
-long-range links are load-bearing, so its adjacency matrix has no small
-bandwidth to find.
+access, and bandwidth-reducing id relabelings push every graph family we
+tried to **≈48–51%**. Which relabeling wins depends on the family:
+**BFS order from the entry point** is best on DiskANN (50.5% at R=32, 49.2%
+at R=64), while classic **Reverse Cuthill-McKee** wins on NSG (**47.9%**,
+the best result overall) and HNSW (48.5%) — on those two it even lands
+*below* the order-oblivious lower bound, proof that the relabeling encodes
+real metric structure. A directed C-M variant ties plain BFS everywhere.
+What survives every labeling is the entropy of the graphs' deliberate
+long-range links: no permutation makes a navigable small-world graph banded.
 
 ## Setup
 
@@ -74,37 +76,42 @@ layout, by contrast, wastes ~half: 32 bits where ~16.4 carry information.
 A node id is an arbitrary label, and Elias-Fano codes reward *locality*: if
 each node's neighbors cluster near its own id (a small adjacency-matrix
 bandwidth), within-row gaps shrink and the same encoder spends fewer bits.
-On Prof. Ferragina's suggestion we relabeled the graph two ways
+On Prof. Ferragina's suggestion we relabeled the graph
 ([scripts/relabel_graph.py](scripts/relabel_graph.py)):
 
 - **Reverse Cuthill-McKee** on the symmetrized adjacency matrix — the
   classic bandwidth-minimization heuristic (scipy implementation);
 - **BFS order** from the DiskANN entry point (node 123742) on the directed
   graph — a cheap approximation of Cuthill-McKee (same level-set idea,
-  no by-degree tie-breaking).
+  no by-degree tie-breaking);
+- **directed C-M** — since no standard C-M exists for directed graphs, we
+  transplant its by-degree tie-breaking onto the out-edge BFS.
 
-Both permute rows and columns, re-sort each list, and leave degrees — and
-therefore the order-oblivious bound — unchanged.
+All permute rows and columns, re-sort each list, and leave degrees — and
+therefore the order-oblivious bound — unchanged. On the R=32 DiskANN graph:
 
 | Labeling | Neighbors bits/edge | vs. bound | Total compressed | Total ratio |
 |---|---:|---:|---:|---:|
 | original ids | 17.95 | +9.4% | 63,393,834 B | 0.5317 |
 | Cuthill-McKee | 17.73 | +8.0% | 62,635,530 B | 0.5253 |
 | **BFS from entry point** | **17.03** | **+3.8%** | **60,181,634 B** | **0.5047** |
+| **directed C-M** | **17.02** | **+3.7%** | **60,164,754 B** | **0.5046** |
 
 Permutation cost is negligible next to the index build: 10.7 s for RCM,
 0.3 s for BFS (native arm64 scipy). Round-trip verification passes for both.
 
 ![Gap distributions by relabeling](docs/charts/gap-dist.svg)
 
-The gap distributions explain the ranking. **BFS** genuinely buys locality:
-1.09M gaps collapse to exactly 1 (median falls 17.7k → 6.1k), because a BFS
-over a metric proximity graph enumerates the space region by region, so
-mutually-near nodes get consecutive ids. **Cuthill-McKee underperforms its
-own approximation** (median 17.1k, nearly unchanged): its by-degree
-tie-breaking within BFS levels reshuffles the metric locality the plain
-visit order preserves, and on this graph — an expander by construction —
-there is no narrow level structure for RCM's minimization to exploit.
+The gap distributions explain the ranking on DiskANN. **BFS** genuinely buys
+locality: 1.09M gaps collapse to exactly 1 (median falls 17.7k → 6.1k),
+because a BFS over a metric proximity graph enumerates the space region by
+region, so mutually-near nodes get consecutive ids. **On DiskANN,
+Cuthill-McKee underperforms its own approximation** (median 17.1k, nearly
+unchanged): the symmetrized global ordering reshuffles the metric locality
+the plain visit order preserves, and Vamana's α-pruned expander offers no
+narrow level structure for RCM's minimization to exploit. The directed C-M
+variant confirms the tie-breaking itself is inert: it tracks plain BFS
+within 0.01 bits/edge.
 
 The improvement is real but bounded: Vamana's α-pruning deliberately keeps
 long-range shortcut edges, so a heavy tail of large gaps survives any
@@ -112,6 +119,47 @@ relabeling — the ~16k-gap peak shrinks but does not move. Bandwidth
 minimization cannot make a small-world graph banded; it can only harvest
 the local fraction of its edges, worth about **0.9 bits/edge (2.7
 percentage points of total ratio)** here.
+
+## Sweep: graph family, degree bound, and labeling
+
+The same pipeline was run over DiskANN at R ∈ {16, 32, 64}, faiss NSG
+(R=32) and faiss HNSW (M=16, base layer, degree ≤ 32) — every graph ×
+every labeling ([scripts/run_experiments.py](scripts/run_experiments.py);
+all 20 combinations verify exact reconstruction):
+
+| Graph | avg deg | Bound b/e | orig | BFS | dir. C-M | RCM | best total ratio |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| DiskANN R=16 | 15.7 | 17.19 | 18.71 | **17.78** | 17.79 | 18.32 | 0.5055 |
+| DiskANN R=32 | 27.8 | 16.41 | 17.95 | 17.03 | **17.02** | 17.73 | 0.5046 |
+| DiskANN R=64 | 38.0 | 15.92 | 17.43 | 16.47 | **16.36** | 16.92 | 0.4923 |
+| NSG R=32 | 20.9 | 16.73 | 18.42 | 17.31 | 17.33 | **16.43** | **0.4788** |
+| HNSW M=16 | 22.5 | 16.66 | 18.34 | 16.78 | 16.83 | **16.55** | 0.4846 |
+
+(bits/edge on the neighbors array; bold = best labeling per graph.)
+
+![Ratio vs R](docs/charts/ratio-vs-R.svg)
+
+![Bits/edge by graph and labeling](docs/charts/algo-labeling.svg)
+
+Three regularities:
+
+- **Denser graphs compress relatively better.** Raising R lowers both the
+  bound (log₂(N/deg) shrinks) and U-GEF's achieved bits/edge; the R=64
+  graph is the DiskANN best at 0.4923 total with directed C-M. Note
+  α-pruning stops at average degree 38 — well short of the R=64 cap — so
+  degree saturation, visible as the 43.6% spike at R=32, disappears.
+- **Which relabeling wins is a property of the construction, not of the
+  encoder.** On both DiskANN graphs BFS/directed-C-M win and RCM trails.
+  On NSG and HNSW the ranking flips: RCM wins outright — NSG's aggressive
+  pruning (avg degree 20.9, tree-like backbone from its MST phase) and
+  HNSW's un-α-diversified neighbor lists leave global bandwidth structure
+  that the symmetrized ordering finds and a single-source BFS does not.
+- **NSG+RCM (16.43) and HNSW+RCM (16.55) fall *below* their order-oblivious
+  bounds (16.73 / 16.66).** This is not a paradox: the bound counts
+  uniformly-random degree-constrained subsets, and a labeling chosen from
+  the graph's own structure makes the actual neighbor sets far from
+  uniform. Beating it is direct evidence the permutation moved real
+  information into the id assignment.
 
 The offsets array is the friendly case for Elias-Fano — strictly increasing
 with small, regular gaps (the degrees) — and collapses to 12.4% of raw
@@ -125,35 +173,37 @@ which is exactly why they compress by 8×.
 
 ## Takeaways
 
-- **U-GEF halves the graph memory of a DiskANN index** (113.7 MiB → 57.4 MiB
-  for SIFT-1M with BFS ids) with exact reconstruction and O(1) random
-  access — for in-memory serving, the graph side of the index effectively
-  costs half.
-- **Relabeling helps, and the cheap heuristic beats the classic one.** BFS
-  order from the entry point costs 0.3 s, needs no extra machinery at query
-  time beyond permuting the stored vectors, and is worth 0.9 bits/edge;
-  Cuthill-McKee is strictly worse here because degree-based tie-breaking
-  destroys metric locality and the graph has no small bandwidth to expose.
-- **The ceiling is the data, not the codec.** U-GEF with BFS ids sits within
-  4% of the order-oblivious bound; the surviving cost is the entropy of
-  Vamana's deliberate long-range edges. Big further gains would have to come
-  from changing the graph, not the labeling or the encoder.
+- **U-GEF halves the graph memory of every ANN index we tried** — best case
+  NSG+RCM at 47.9% of raw (113.7 → 54.5 MiB-scale savings across families)
+  with exact reconstruction and O(1) random access.
+- **Always relabel; pick the labeling by graph family.** BFS from the entry
+  point on DiskANN, classic RCM on NSG/HNSW. Both cost seconds against
+  builds of many minutes and need nothing at query time beyond permuting
+  the stored vectors. When in doubt, BFS is the robust default: it is
+  never worse than original ids by less than ~0.9 bits/edge in this study.
+- **The ceiling is the data, not the codec.** On DiskANN, U-GEF lands
+  within ~4% of the order-oblivious bound; NSG/HNSW with RCM even beat
+  that bound by encoding structure into the labeling. The surviving cost
+  everywhere is the entropy of deliberate long-range edges.
 - **The approximate strategy is a good default for build-heavy pipelines**:
   3× faster construction for 0.7% more space.
 
 ## Reproducing
 
-Follow the pipeline in [README.md](README.md); the numbers above come from:
+Follow the pipeline in [README.md](README.md). Individual runs:
 
 ```bash
 ./build/information_retrieval ./data/graph              # optimal
 ./build/information_retrieval ./data/graph --approximate
+```
 
-# relabeling experiments (native python, needs numpy + scipy)
-./venv/bin/python scripts/relabel_graph.py --prefix ./data/graph --out-prefix ./data/graph_bfs --strategy bfs --start 123742
-./venv/bin/python scripts/relabel_graph.py --prefix ./data/graph --out-prefix ./data/graph_rcm --strategy rcm
-./build/information_retrieval ./data/graph_bfs
-./build/information_retrieval ./data/graph_rcm
+The full sweep (relabels every graph with every strategy, compresses,
+verifies, and emits JSON + a markdown table):
+
+```bash
+./venv/bin/python scripts/run_experiments.py --binary ./build/information_retrieval \
+    --out ./data/sweep_results.json \
+    ./data/graph ./data/graph_R16 ./data/graph_R64 ./data/graph_nsg ./data/graph_hnsw
 ```
 
 Graph statistics (degree/gap histograms, entropy bound) are computed by a

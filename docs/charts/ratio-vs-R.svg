@@ -1,0 +1,43 @@
+<svg viewBox="0 0 720 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ratio-vs-R">
+<style>
+:root{--ink:#0b0b0b;--sec:#52514e;--mut:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--blue:#2a78d6;--orange:#eb6834;--aqua:#1baf7a;--gray:#898781}
+@media (prefers-color-scheme: dark){:root{--ink:#ffffff;--sec:#c3c2b7;--grid:#2c2c2a;--axis:#383835;--blue:#3987e5;--orange:#d95926;--aqua:#199e70}}
+text{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.t{fill:var(--ink);font-size:15px;font-weight:600}
+.s{fill:var(--sec);font-size:12.5px}
+.m{fill:var(--mut);font-size:12px}
+.v{fill:var(--ink);font-size:13px}
+.grid{stroke:var(--grid);stroke-width:1}
+.axis{stroke:var(--axis);stroke-width:1}
+</style>
+<text class="t" x="16" y="28">Total compression ratio vs DiskANN R</text>
+<text class="s" x="16" y="48">compressed/raw for the whole CSR structure · axis starts at 0.48</text>
+<line class="grid" x1="90" y1="262.0" x2="560" y2="262.0"/>
+<text class="m" x="82" y="266.0" text-anchor="end">0.48</text>
+<line class="grid" x1="90" y1="196.7" x2="560" y2="196.7"/>
+<text class="m" x="82" y="200.7" text-anchor="end">0.50</text>
+<line class="grid" x1="90" y1="131.3" x2="560" y2="131.3"/>
+<text class="m" x="82" y="135.3" text-anchor="end">0.52</text>
+<line class="grid" x1="90" y1="66.0" x2="560" y2="66.0"/>
+<text class="m" x="82" y="70.0" text-anchor="end">0.54</text>
+<text class="m" x="90.0" y="282" text-anchor="middle">R = 16</text>
+<text class="m" x="325.0" y="282" text-anchor="middle">R = 32</text>
+<text class="m" x="560.0" y="282" text-anchor="middle">R = 64</text>
+<line class="axis" x1="90" y1="262" x2="560" y2="262"/>
+<polyline points="90.0,94.7 325.0,93.1 560.0,118.3" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="90.0" cy="94.7" r="4" fill="var(--blue)"/>
+<circle cx="325.0" cy="93.1" r="4" fill="var(--blue)"/>
+<circle cx="560.0" cy="118.3" r="4" fill="var(--blue)"/>
+<text class="v" x="572" y="122.3">original ids</text>
+<polyline points="90.0,178.7 325.0,181.3 560.0,212.0" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="90.0" cy="178.7" r="4" fill="var(--orange)"/>
+<circle cx="325.0" cy="181.3" r="4" fill="var(--orange)"/>
+<circle cx="560.0" cy="212.0" r="4" fill="var(--orange)"/>
+<text class="v" x="572" y="216.0">BFS ids</text>
+<polyline points="90.0,130.4 325.0,114.0 560.0,167.9" fill="none" stroke="var(--aqua)" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="90.0" cy="130.4" r="4" fill="var(--aqua)"/>
+<circle cx="325.0" cy="114.0" r="4" fill="var(--aqua)"/>
+<circle cx="560.0" cy="167.9" r="4" fill="var(--aqua)"/>
+<text class="v" x="572" y="171.9">Cuthill-McKee</text>
+<text class="s" x="16" y="299">directed C-M tracks BFS within 0.003 everywhere (table in report)</text>
+</svg>

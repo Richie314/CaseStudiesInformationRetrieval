@@ -1,0 +1,58 @@
+<svg viewBox="0 0 720 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="algo-labeling">
+<style>
+:root{--ink:#0b0b0b;--sec:#52514e;--mut:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--blue:#2a78d6;--orange:#eb6834;--aqua:#1baf7a;--gray:#898781}
+@media (prefers-color-scheme: dark){:root{--ink:#ffffff;--sec:#c3c2b7;--grid:#2c2c2a;--axis:#383835;--blue:#3987e5;--orange:#d95926;--aqua:#199e70}}
+text{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.t{fill:var(--ink);font-size:15px;font-weight:600}
+.s{fill:var(--sec);font-size:12.5px}
+.m{fill:var(--mut);font-size:12px}
+.v{fill:var(--ink);font-size:13px}
+.grid{stroke:var(--grid);stroke-width:1}
+.axis{stroke:var(--axis);stroke-width:1}
+</style>
+<text class="t" x="16" y="28">Neighbors bits/edge by graph and labeling</text>
+<text class="s" x="16" y="48">dots: U-GEF result · dashes: order-oblivious bound · axis starts at 15.5</text>
+<circle cx="90" cy="66" r="5" fill="var(--blue)"/>
+<text class="s" x="102" y="71">original ids</text>
+<circle cx="216" cy="66" r="5" fill="var(--orange)"/>
+<text class="s" x="228" y="71">BFS ids</text>
+<circle cx="302" cy="66" r="5" fill="var(--aqua)"/>
+<text class="s" x="314" y="71">Cuthill-McKee</text>
+<line x1="436" y1="66" x2="460" y2="66" stroke="var(--sec)" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text class="s" x="466" y="71">bound</text>
+<line class="grid" x1="90" y1="252.9" x2="700" y2="252.9"/>
+<text class="m" x="82" y="256.9" text-anchor="end">16</text>
+<line class="grid" x1="90" y1="198.6" x2="700" y2="198.6"/>
+<text class="m" x="82" y="202.6" text-anchor="end">17</text>
+<line class="grid" x1="90" y1="144.3" x2="700" y2="144.3"/>
+<text class="m" x="82" y="148.3" text-anchor="end">18</text>
+<line class="grid" x1="90" y1="90.0" x2="700" y2="90.0"/>
+<text class="m" x="82" y="94.0" text-anchor="end">19</text>
+<line class="axis" x1="90" y1="280" x2="700" y2="280"/>
+<text class="m" x="151.0" y="300" text-anchor="middle">DiskANN R16</text>
+<line x1="109.0" y1="188.3" x2="193.0" y2="188.3" stroke="var(--sec)" stroke-width="1.5" stroke-dasharray="5 4"/>
+<circle cx="133.0" cy="105.7" r="5" fill="var(--blue)"/>
+<circle cx="151.0" cy="156.2" r="5" fill="var(--orange)"/>
+<circle cx="169.0" cy="126.9" r="5" fill="var(--aqua)"/>
+<text class="m" x="273.0" y="300" text-anchor="middle">DiskANN R32</text>
+<line x1="231.0" y1="230.6" x2="315.0" y2="230.6" stroke="var(--sec)" stroke-width="1.5" stroke-dasharray="5 4"/>
+<circle cx="255.0" cy="147.0" r="5" fill="var(--blue)"/>
+<circle cx="273.0" cy="196.9" r="5" fill="var(--orange)"/>
+<circle cx="291.0" cy="158.9" r="5" fill="var(--aqua)"/>
+<text class="m" x="395.0" y="300" text-anchor="middle">DiskANN R64</text>
+<line x1="353.0" y1="257.2" x2="437.0" y2="257.2" stroke="var(--sec)" stroke-width="1.5" stroke-dasharray="5 4"/>
+<circle cx="377.0" cy="175.2" r="5" fill="var(--blue)"/>
+<circle cx="395.0" cy="227.3" r="5" fill="var(--orange)"/>
+<circle cx="413.0" cy="202.9" r="5" fill="var(--aqua)"/>
+<text class="m" x="517.0" y="300" text-anchor="middle">NSG R32</text>
+<line x1="475.0" y1="213.2" x2="559.0" y2="213.2" stroke="var(--sec)" stroke-width="1.5" stroke-dasharray="5 4"/>
+<circle cx="499.0" cy="121.5" r="5" fill="var(--blue)"/>
+<circle cx="517.0" cy="181.7" r="5" fill="var(--orange)"/>
+<circle cx="535.0" cy="229.5" r="5" fill="var(--aqua)"/>
+<text class="m" x="639.0" y="300" text-anchor="middle">HNSW M16</text>
+<line x1="597.0" y1="217.0" x2="681.0" y2="217.0" stroke="var(--sec)" stroke-width="1.5" stroke-dasharray="5 4"/>
+<circle cx="621.0" cy="125.8" r="5" fill="var(--blue)"/>
+<circle cx="639.0" cy="210.5" r="5" fill="var(--orange)"/>
+<circle cx="657.0" cy="223.0" r="5" fill="var(--aqua)"/>
+<text class="s" x="16" y="319">NSG and HNSW with Cuthill-McKee land below their order-oblivious bounds</text>
+</svg>
