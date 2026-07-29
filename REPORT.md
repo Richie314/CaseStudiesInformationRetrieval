@@ -2,9 +2,13 @@
 
 **TL;DR:** U-GEF stores the DiskANN proximity graph in **53.2% of its raw CSR
 size** — **18.24 bits/edge** against 34.30 raw — while keeping O(1) random
-access, and it sits only **9.4% above the information-theoretic lower bound**
-for this graph's neighbor lists. The adjacency data of a well-built ANN graph
-is close to incompressible, and U-GEF captures most of what is there to take.
+access. Relabeling node ids by **BFS order from the entry point** improves
+this to **50.5% (17.31 bits/edge total, 17.03 for neighbors)**, beating a
+Reverse Cuthill-McKee relabeling and landing within **3.8%** of the
+order-oblivious lower bound for the neighbors array. The adjacency data of a
+well-built ANN graph is close to incompressible under any id assignment: its
+long-range links are load-bearing, so its adjacency matrix has no small
+bandwidth to find.
 
 ## Setup
 
@@ -52,18 +56,62 @@ whole 0..10⁶ id space.
 
 ![Gap distribution](docs/charts/gap-dist.svg)
 
-The gaps between consecutive sorted neighbor ids peak right where uniform
-scattering predicts (median ≈ 17.7k, mean ≈ 32.7k ≈ N / avg-degree ≈ 36k).
-This pins the entropy: the combinatorial lower bound for storing 1M sorted
-subsets of this size distribution,
+With the original DiskANN ids, the gaps between consecutive sorted neighbor
+ids peak right where uniform scattering predicts (median ≈ 17.7k, mean ≈
+32.7k ≈ N / avg-degree ≈ 36k). This pins the entropy: the combinatorial
+lower bound for storing 1M sorted subsets of this size distribution,
 
 > Σᵢ log₂ C(N, degᵢ) = 456.4 Mbit ⇒ **16.41 bits/edge**,
 
-means *no* encoding of these adjacency sets can beat 16.41 bits/edge. U-GEF's
-17.95 bits/edge for the neighbors array is **1.094× the bound** — the encoding
-overhead (split-point metadata, rank/select supports for O(1) access) costs
-under 10%. The raw `uint32` layout, by contrast, wastes ~half: 32 bits where
-~16.4 carry information.
+means no encoding that treats the labeling as arbitrary (*order-oblivious*)
+can beat 16.41 bits/edge. U-GEF's 17.95 bits/edge for the neighbors array is
+**1.094× the bound** — the encoding overhead (split-point metadata,
+rank/select supports for O(1) access) costs under 10%. The raw `uint32`
+layout, by contrast, wastes ~half: 32 bits where ~16.4 carry information.
+
+## Experiment: bandwidth-reducing relabelings
+
+A node id is an arbitrary label, and Elias-Fano codes reward *locality*: if
+each node's neighbors cluster near its own id (a small adjacency-matrix
+bandwidth), within-row gaps shrink and the same encoder spends fewer bits.
+On Prof. Ferragina's suggestion we relabeled the graph two ways
+([scripts/relabel_graph.py](scripts/relabel_graph.py)):
+
+- **Reverse Cuthill-McKee** on the symmetrized adjacency matrix — the
+  classic bandwidth-minimization heuristic (scipy implementation);
+- **BFS order** from the DiskANN entry point (node 123742) on the directed
+  graph — a cheap approximation of Cuthill-McKee (same level-set idea,
+  no by-degree tie-breaking).
+
+Both permute rows and columns, re-sort each list, and leave degrees — and
+therefore the order-oblivious bound — unchanged.
+
+| Labeling | Neighbors bits/edge | vs. bound | Total compressed | Total ratio |
+|---|---:|---:|---:|---:|
+| original ids | 17.95 | +9.4% | 63,393,834 B | 0.5317 |
+| Cuthill-McKee | 17.73 | +8.0% | 62,635,530 B | 0.5253 |
+| **BFS from entry point** | **17.03** | **+3.8%** | **60,181,634 B** | **0.5047** |
+
+Permutation cost is negligible next to the index build: 10.7 s for RCM,
+0.3 s for BFS (native arm64 scipy). Round-trip verification passes for both.
+
+![Gap distributions by relabeling](docs/charts/gap-dist.svg)
+
+The gap distributions explain the ranking. **BFS** genuinely buys locality:
+1.09M gaps collapse to exactly 1 (median falls 17.7k → 6.1k), because a BFS
+over a metric proximity graph enumerates the space region by region, so
+mutually-near nodes get consecutive ids. **Cuthill-McKee underperforms its
+own approximation** (median 17.1k, nearly unchanged): its by-degree
+tie-breaking within BFS levels reshuffles the metric locality the plain
+visit order preserves, and on this graph — an expander by construction —
+there is no narrow level structure for RCM's minimization to exploit.
+
+The improvement is real but bounded: Vamana's α-pruning deliberately keeps
+long-range shortcut edges, so a heavy tail of large gaps survives any
+relabeling — the ~16k-gap peak shrinks but does not move. Bandwidth
+minimization cannot make a small-world graph banded; it can only harvest
+the local fraction of its edges, worth about **0.9 bits/edge (2.7
+percentage points of total ratio)** here.
 
 The offsets array is the friendly case for Elias-Fano — strictly increasing
 with small, regular gaps (the degrees) — and collapses to 12.4% of raw
@@ -77,14 +125,19 @@ which is exactly why they compress by 8×.
 
 ## Takeaways
 
-- **U-GEF halves the graph memory of a DiskANN index** (113.7 MiB → 60.5 MiB
-  for SIFT-1M) with exact reconstruction and O(1) random access — for
-  in-memory serving, the graph side of the index effectively costs half.
-- **The ceiling is the data, not the codec.** Within-list structure of an
-  ANN proximity graph is nearly random; 16.41 bits/edge is the floor and
-  U-GEF lands within 10% of it. Substantially better ratios would require
-  changing what is stored (e.g. id re-labeling to induce locality), not the
-  encoder.
+- **U-GEF halves the graph memory of a DiskANN index** (113.7 MiB → 57.4 MiB
+  for SIFT-1M with BFS ids) with exact reconstruction and O(1) random
+  access — for in-memory serving, the graph side of the index effectively
+  costs half.
+- **Relabeling helps, and the cheap heuristic beats the classic one.** BFS
+  order from the entry point costs 0.3 s, needs no extra machinery at query
+  time beyond permuting the stored vectors, and is worth 0.9 bits/edge;
+  Cuthill-McKee is strictly worse here because degree-based tie-breaking
+  destroys metric locality and the graph has no small bandwidth to expose.
+- **The ceiling is the data, not the codec.** U-GEF with BFS ids sits within
+  4% of the order-oblivious bound; the surviving cost is the entropy of
+  Vamana's deliberate long-range edges. Big further gains would have to come
+  from changing the graph, not the labeling or the encoder.
 - **The approximate strategy is a good default for build-heavy pipelines**:
   3× faster construction for 0.7% more space.
 
@@ -95,6 +148,12 @@ Follow the pipeline in [README.md](README.md); the numbers above come from:
 ```bash
 ./build/information_retrieval ./data/graph              # optimal
 ./build/information_retrieval ./data/graph --approximate
+
+# relabeling experiments (native python, needs numpy + scipy)
+./venv/bin/python scripts/relabel_graph.py --prefix ./data/graph --out-prefix ./data/graph_bfs --strategy bfs --start 123742
+./venv/bin/python scripts/relabel_graph.py --prefix ./data/graph --out-prefix ./data/graph_rcm --strategy rcm
+./build/information_retrieval ./data/graph_bfs
+./build/information_retrieval ./data/graph_rcm
 ```
 
 Graph statistics (degree/gap histograms, entropy bound) are computed by a

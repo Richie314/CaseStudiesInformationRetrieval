@@ -1,7 +1,7 @@
-<svg viewBox="0 0 720 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="bits-per-edge">
+<svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="bits-per-edge">
 <style>
-:root{--ink:#0b0b0b;--sec:#52514e;--mut:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--blue:#2a78d6;--gray:#898781}
-@media (prefers-color-scheme: dark){:root{--ink:#ffffff;--sec:#c3c2b7;--grid:#2c2c2a;--axis:#383835;--blue:#3987e5}}
+:root{--ink:#0b0b0b;--sec:#52514e;--mut:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--blue:#2a78d6;--orange:#eb6834;--aqua:#1baf7a;--gray:#898781}
+@media (prefers-color-scheme: dark){:root{--ink:#ffffff;--sec:#c3c2b7;--grid:#2c2c2a;--axis:#383835;--blue:#3987e5;--orange:#d95926;--aqua:#199e70}}
 text{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
 .t{fill:var(--ink);font-size:15px;font-weight:600}
 .s{fill:var(--sec);font-size:12.5px}
@@ -12,23 +12,29 @@ text{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
 </style>
 <text class="t" x="16" y="28">Bits per edge — neighbors array</text>
 <text class="s" x="16" y="48">SIFT-1M DiskANN graph, 27.8M edges · lower is better</text>
-<line class="grid" x1="190.0" y1="66" x2="190.0" y2="176"/>
-<text class="m" x="190.0" y="194" text-anchor="middle">0</text>
-<line class="grid" x1="315.0" y1="66" x2="315.0" y2="176"/>
-<text class="m" x="315.0" y="194" text-anchor="middle">8</text>
-<line class="grid" x1="440.0" y1="66" x2="440.0" y2="176"/>
-<text class="m" x="440.0" y="194" text-anchor="middle">16</text>
-<line class="grid" x1="565.0" y1="66" x2="565.0" y2="176"/>
-<text class="m" x="565.0" y="194" text-anchor="middle">24</text>
-<line class="grid" x1="690.0" y1="66" x2="690.0" y2="176"/>
-<text class="m" x="690.0" y="194" text-anchor="middle">32</text>
-<line class="axis" x1="190" y1="66" x2="190" y2="176"/>
-<text class="s" x="180" y="90" text-anchor="end">Raw uint32</text>
-<path d="M190.0 72.0 H686.0 Q690.0 72.0 690.0 76.0 V94.0 Q690.0 98.0 686.0 98.0 H190.0 Z" fill="var(--gray)"/>
-<text class="v" x="682.0" y="90" text-anchor="end" fill="#ffffff">32.00</text>
-<text class="s" x="180" y="152" text-anchor="end">U-GEF</text>
-<path d="M190.0 134.0 H466.5 Q470.5 134.0 470.5 138.0 V156.0 Q470.5 160.0 466.5 160.0 H190.0 Z" fill="var(--blue)"/>
-<text class="v" x="478.5" y="152">17.95</text>
-<line x1="446.4" y1="58" x2="446.4" y2="176" stroke="var(--sec)" stroke-width="1.5" stroke-dasharray="5 4"/>
-<text class="s" x="438.4" y="62" text-anchor="end">lower bound 16.41</text>
+<line class="grid" x1="210.0" y1="66" x2="210.0" y2="266"/>
+<text class="m" x="210.0" y="284" text-anchor="middle">0</text>
+<line class="grid" x1="330.0" y1="66" x2="330.0" y2="266"/>
+<text class="m" x="330.0" y="284" text-anchor="middle">8</text>
+<line class="grid" x1="450.0" y1="66" x2="450.0" y2="266"/>
+<text class="m" x="450.0" y="284" text-anchor="middle">16</text>
+<line class="grid" x1="570.0" y1="66" x2="570.0" y2="266"/>
+<text class="m" x="570.0" y="284" text-anchor="middle">24</text>
+<line class="grid" x1="690.0" y1="66" x2="690.0" y2="266"/>
+<text class="m" x="690.0" y="284" text-anchor="middle">32</text>
+<line class="axis" x1="210" y1="66" x2="210" y2="266"/>
+<text class="s" x="200" y="94" text-anchor="end">Raw uint32</text>
+<path d="M210.0 76.0 H686.0 Q690.0 76.0 690.0 80.0 V98.0 Q690.0 102.0 686.0 102.0 H210.0 Z" fill="var(--gray)"/>
+<text class="v" x="682.0" y="94" text-anchor="end" fill="#ffffff">32.00</text>
+<text class="s" x="200" y="142" text-anchor="end">U-GEF, original ids</text>
+<path d="M210.0 124.0 H475.2 Q479.2 124.0 479.2 128.0 V146.0 Q479.2 150.0 475.2 150.0 H210.0 Z" fill="var(--blue)"/>
+<text class="v" x="487.2" y="142">17.95</text>
+<text class="s" x="200" y="190" text-anchor="end">U-GEF + Cuthill-McKee</text>
+<path d="M210.0 172.0 H471.9 Q475.9 172.0 475.9 176.0 V194.0 Q475.9 198.0 471.9 198.0 H210.0 Z" fill="var(--blue)"/>
+<text class="v" x="483.9" y="190">17.73</text>
+<text class="s" x="200" y="238" text-anchor="end">U-GEF + BFS ids</text>
+<path d="M210.0 220.0 H461.5 Q465.5 220.0 465.5 224.0 V242.0 Q465.5 246.0 461.5 246.0 H210.0 Z" fill="var(--blue)"/>
+<text class="v" x="473.5" y="238">17.03</text>
+<line x1="456.1" y1="58" x2="456.1" y2="266" stroke="var(--sec)" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text class="s" x="448.1" y="62" text-anchor="end">order-oblivious bound 16.41</text>
 </svg>
