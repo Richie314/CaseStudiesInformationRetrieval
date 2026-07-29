@@ -30,13 +30,18 @@ std::vector<T> read_raw_binary(const std::string& path) {
 }
 
 // Compression ratio per Ferragina's convention: compressed size over
-// original size (smaller is better).
-void print_ratio(const char* label, size_t raw_bytes, size_t compressed_bytes) {
+// original size (smaller is better). Space is also reported as bits per
+// edge, the usual graph-compression metric.
+void print_ratio(const char* label, size_t raw_bytes, size_t compressed_bytes,
+                 size_t num_edges) {
     const double ratio = raw_bytes > 0
         ? static_cast<double>(compressed_bytes) / static_cast<double>(raw_bytes)
         : 0.0;
-    std::printf("%-12s raw=%10zu B  compressed=%10zu B  ratio=%.4f (%.2f%%)\n",
-                label, raw_bytes, compressed_bytes, ratio, ratio * 100.0);
+    const double bits_per_edge = num_edges > 0
+        ? static_cast<double>(compressed_bytes) * 8.0 / static_cast<double>(num_edges)
+        : 0.0;
+    std::printf("%-12s raw=%10zu B  compressed=%10zu B  ratio=%.4f (%.2f%%)  bits/edge=%.2f\n",
+                label, raw_bytes, compressed_bytes, ratio, ratio * 100.0, bits_per_edge);
 }
 
 int run(int argc, char** argv) {
@@ -75,11 +80,12 @@ int run(int argc, char** argv) {
     const size_t raw_offsets_bytes = offsets.size() * sizeof(uint64_t);
     const size_t raw_neighbors_bytes = neighbors.size() * sizeof(uint32_t);
 
-    print_ratio("offsets", raw_offsets_bytes, ef_offsets.size_in_bytes());
-    print_ratio("neighbors", raw_neighbors_bytes, ef_neighbors.size_in_bytes());
+    print_ratio("offsets", raw_offsets_bytes, ef_offsets.size_in_bytes(), nnz);
+    print_ratio("neighbors", raw_neighbors_bytes, ef_neighbors.size_in_bytes(), nnz);
     print_ratio("TOTAL",
                 raw_offsets_bytes + raw_neighbors_bytes,
-                ef_offsets.size_in_bytes() + ef_neighbors.size_in_bytes());
+                ef_offsets.size_in_bytes() + ef_neighbors.size_in_bytes(),
+                nnz);
 
     // ---- Correctness check: reconstruct every row and compare ----
     std::cout << "\nVerifying full round-trip correctness...\n";
