@@ -9,7 +9,9 @@ compressed in C++ with the **U-GEF** algorithm from the
 library. The program measures the compression ratio and verifies that every
 adjacency list reconstructs exactly.
 
-Results for SIFT-1M are summarized in [REPORT.md](REPORT.md).
+Results for SIFT-1M are summarized in [REPORT.md](REPORT.md); the
+experiment history and open directions live in
+[RESEARCH_LOG.md](RESEARCH_LOG.md).
 
 ## Repository layout
 
