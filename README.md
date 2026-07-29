@@ -11,7 +11,7 @@ curl -L "http://ann-benchmarks.com/sift-128-euclidean.hdf5" -o "./data/sift-128-
 
 python3 ./scripts/diskann-index.py --input ./data/sift-128-euclidean.hdf5 --index-dir ./data/sift_diskann_index
 
-python3 ./scripts/export_diskann_graph.py --index ./data/sift_diskann_index/sift_diskann --prefix graph
+python3 ./scripts/export_diskann_graph.py --index ./data/sift_diskann_index/sift_diskann --prefix ./data/graph
 ```
 
 ```bash
