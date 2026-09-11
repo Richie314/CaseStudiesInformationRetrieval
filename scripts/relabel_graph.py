@@ -157,6 +157,9 @@ def main():
 
     new_offsets.astype("<u8").tofile(f"{args.out_prefix}_offsets.bin")
     new_neighbors.astype("<u4").tofile(f"{args.out_prefix}_neighbors.bin")
+    # perm[k] = old id that received new id k; needed to permute vectors and
+    # map search results back to the original ids.
+    perm.astype("<u4").tofile(f"{args.out_prefix}_perm.bin")
 
     stats = {"strategy": args.strategy, "perm_seconds": t_perm,
              **gap_stats(new_offsets, new_neighbors)}
