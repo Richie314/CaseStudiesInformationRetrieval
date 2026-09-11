@@ -12,12 +12,37 @@ directions before starting new work.
 
 ## State of play
 
-- Pipeline is fully working end-to-end; all results in REPORT.md come
-  from `scripts/run_experiments.py` (20 graph×labeling combos, all
-  verified with exact round-trip reconstruction).
-- Best result so far: NSG + Reverse Cuthill-McKee, total ratio 0.4788.
-- `data/` is gitignored: every dataset, index, and CSR export must be
-  regenerated (commands below and in README.md).
+- Part I (compression) results in REPORT.md come from
+  `scripts/run_experiments.py` (20 graph×labeling combos, all verified
+  with exact round-trip reconstruction). Best: NSG + RCM, ratio 0.4788 on
+  SIFT; on GloVe BFS wins on every family.
+- Parts II–III (2026-09-11): `src/search_bench.cpp` runs DiskANN-style
+  beam search over raw / packed / U-GEF / per-row-codec / two-tier stores
+  (+ optional navigation layers) and profiles per-node access counts;
+  `src/rowbench.cpp` microbenchmarks row decoding; `src/row_codecs.hpp`
+  holds the per-row EF/BIC/packed baselines. Every timed run's JSON is in
+  `results/` (committed); `scripts/summarize_results.py` and
+  `scripts/make_charts.py` rebuild the tables/charts from them.
+- Key facts: U-GEF row access ≈ 880 ns vs 60 ns raw, independent of the
+  partition size (positioning cost); row-aligned EF has equal space at
+  175 ns; frequency-ranked hot sets beat BFS levels 2.5× in hit rate.
+- `data/` is gitignored: every dataset, index, CSR export, profile and
+  relabeling must be regenerated (commands below and in README.md).
+
+## Running on this Linux box (podman, no host toolchain)
+
+The host image has no C++ compiler and Python 3.14; everything runs in
+podman images built from `Containerfile`s kept in the session scratchpad
+(recreate: `python:3.11-slim` + build-essential cmake ninja + pip
+numpy scipy h5py faiss-cpu hnswlib matplotlib = `ir-lab`; a second image
+with `numpy<2 diskannpy h5py` = `ir-diskann`, because diskannpy segfaults
+at import under numpy 2). Run with
+`podman run --rm --cpuset-cpus=<cpus> --cpuset-mems=<node> -v $PWD:/work:z -w /work localhost/ir-lab <cmd>`.
+Mount with `:z` (shared) — `:Z` lets concurrent containers relabel each
+other out. `podman run` has no stdin: scripts must be files.
+NUMA node 0 = cpus 0-7,16-23, node 1 = 8-15,24-31. Timed runs: one
+single-thread process pinned to core 0 with node 0 otherwise idle;
+concurrent runs are ~35% slower and repeated batches differ by 4–7%.
 
 ## Building on Linux (you are not on macOS)
 
@@ -88,6 +113,8 @@ python scripts/run_experiments.py --binary ./build/information_retrieval \
 
 - **One logically separate change per commit** — never bundle (e.g. a fix
   and a doc update). Antonio insists on this.
+- `results/*.json` are inputs to REPORT.md tables: regenerate the tables
+  with `scripts/summarize_results.py` rather than editing numbers by hand.
 - Commits on the Mac are authored as `Antonio Napolitano <anton@polit.no>`
   and GPG-signed with a smartcard-backed key. On another machine that key
   is unavailable: ask Antonio how to sign (or whether to skip `-S`)
