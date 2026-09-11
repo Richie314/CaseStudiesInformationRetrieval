@@ -25,3 +25,13 @@ add_executable(information_retrieval src/main.cpp)
 target_link_libraries(information_retrieval PRIVATE gef::gef)
 
 target_compile_features(information_retrieval PRIVATE cxx_std_20)
+
+# Beam-search benchmark over raw / packed / GEF / hybrid graph stores.
+find_package(OpenMP)
+add_executable(search_bench src/search_bench.cpp)
+target_link_libraries(search_bench PRIVATE gef::gef)
+if(OpenMP_CXX_FOUND)
+  target_link_libraries(search_bench PRIVATE OpenMP::OpenMP_CXX)
+endif()
+target_compile_features(search_bench PRIVATE cxx_std_20)
+
