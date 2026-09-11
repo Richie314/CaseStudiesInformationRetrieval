@@ -1,0 +1,1 @@
+{"backend":"raw","offsets":"raw32","graph_bytes":119234396,"edges":27808597,"nodes":1000000,"hot_count":0,"partition":32000,"threads":8,"runs":[{"L":64,"recall":0.099978,"qps":19056.1,"mean_us":419.548,"p50_us":420.6,"p99_us":670.86,"hops":69.3789,"dists":1409.09}]}

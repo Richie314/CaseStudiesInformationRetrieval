@@ -1,0 +1,1 @@
+{"backend":"hybrid","offsets":"raw32","graph_bytes":75651094,"edges":27808597,"nodes":1000000,"hot_count":200000,"partition":32000,"threads":1,"hier_bytes":0,"runs":[{"L":64,"recall":0.97351,"qps":4790.53,"mean_us":210.68,"p50_us":208.82,"p99_us":309.17,"hops":69.5447,"dists":1438.82}]}
