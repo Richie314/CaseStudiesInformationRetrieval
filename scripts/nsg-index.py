@@ -8,7 +8,7 @@ import h5py
 import numpy as np
 
 
-def load_vectors(hdf5_path: str, dataset_key: str = "train") -> np.ndarray:
+def load_vectors(hdf5_path: str, dataset_key: str = "train", normalize: bool = False) -> np.ndarray:
     """Load the base vector set from an ann-benchmarks-style hdf5 file."""
     with h5py.File(hdf5_path, "r") as f:
         if dataset_key not in f:
@@ -77,9 +77,10 @@ def main():
     parser.add_argument("--L", type=int, default=64, help="Search list width during construction")
     parser.add_argument("--C", type=int, default=100, help="K of the initial KNN graph (GK)")
     parser.add_argument("--metric", choices=["l2", "ip"], default="l2")
+    parser.add_argument("--normalize", action="store_true", help="L2-normalise vectors (angular datasets)")
     args = parser.parse_args()
 
-    vectors = load_vectors(args.input, args.dataset_key)
+    vectors = load_vectors(args.input, args.dataset_key, args.normalize)
     index = build_nsg_index(vectors, R=args.R, L=args.L, C=args.C, metric=args.metric)
 
     faiss.write_index(index, args.output)

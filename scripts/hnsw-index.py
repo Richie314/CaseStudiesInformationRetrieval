@@ -17,7 +17,7 @@ import h5py
 import numpy as np
 
 
-def load_vectors(hdf5_path: str, dataset_key: str = "train") -> np.ndarray:
+def load_vectors(hdf5_path: str, dataset_key: str = "train", normalize: bool = False) -> np.ndarray:
     with h5py.File(hdf5_path, "r") as f:
         if dataset_key not in f:
             raise KeyError(
@@ -25,7 +25,10 @@ def load_vectors(hdf5_path: str, dataset_key: str = "train") -> np.ndarray:
                 f"Available keys: {list(f.keys())}"
             )
         vectors = f[dataset_key][:]
-    return np.ascontiguousarray(vectors, dtype=np.float32)
+    vectors = np.ascontiguousarray(vectors, dtype=np.float32)
+    if normalize:  # angular datasets: cosine ordering == inner-product ordering on unit vectors
+        vectors /= np.maximum(np.linalg.norm(vectors, axis=1, keepdims=True), 1e-12)
+    return vectors
 
 
 def build_hnsw(vectors: np.ndarray, M: int, ef_construction: int,
@@ -92,11 +95,12 @@ def main():
                         help="HNSW M; base-layer degree cap is 2*M")
     parser.add_argument("--ef-construction", type=int, default=200)
     parser.add_argument("--metric", choices=["l2", "ip"], default="l2")
+    parser.add_argument("--normalize", action="store_true", help="L2-normalise vectors (angular datasets)")
     parser.add_argument("--no-sort", action="store_true",
                         help="Keep original neighbor order")
     args = parser.parse_args()
 
-    vectors = load_vectors(args.input, args.dataset_key)
+    vectors = load_vectors(args.input, args.dataset_key, args.normalize)
     index = build_hnsw(vectors, args.M, args.ef_construction, args.metric)
     export_base_layer(index, args.prefix, sort_rows=not args.no_sort)
 
