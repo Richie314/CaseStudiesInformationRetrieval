@@ -35,3 +35,7 @@ if(OpenMP_CXX_FOUND)
 endif()
 target_compile_features(search_bench PRIVATE cxx_std_20)
 
+# Row-decoding microbenchmark (raw / U-GEF partition sizes / per-row codecs).
+add_executable(rowbench src/rowbench.cpp)
+target_link_libraries(rowbench PRIVATE gef::gef)
+target_compile_features(rowbench PRIVATE cxx_std_20)
