@@ -1,0 +1,62 @@
+<svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hot-set hit rate vs budget by caching policy">
+<style>
+:root{--ink:#0b0b0b;--sec:#52514e;--mut:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--blue:#2a78d6;--orange:#eb6834;--aqua:#1baf7a;--gray:#898781;--purple:#8a5cd6;--red:#d63a3a}
+@media (prefers-color-scheme: dark){:root{--ink:#ffffff;--sec:#c3c2b7;--grid:#2c2c2a;--axis:#383835;--blue:#3987e5;--orange:#d95926;--aqua:#199e70;--purple:#9b74e0;--red:#e05252}}
+text{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.t{fill:var(--ink);font-size:15px;font-weight:600}
+.s{fill:var(--sec);font-size:12.5px}
+.m{fill:var(--mut);font-size:12px}
+.v{fill:var(--ink);font-size:12px}
+.grid{stroke:var(--grid);stroke-width:1}
+.axis{stroke:var(--axis);stroke-width:1}
+</style>
+
+<text class="t" x="16" y="28">Hot-set hit rate vs budget by caching policy</text>
+<text class="s" x="16" y="48">SIFT-1M, DiskANN R=32, L=64; policies ranked on the training profile, hit rate on 5,000 held-out queries</text>
+<line class="grid" x1="80" y1="300.0" x2="700" y2="300.0"/>
+<text class="m" x="72" y="304.0" text-anchor="end">0%</text>
+<line class="grid" x1="80" y1="256.0" x2="700" y2="256.0"/>
+<text class="m" x="72" y="260.0" text-anchor="end">20%</text>
+<line class="grid" x1="80" y1="212.0" x2="700" y2="212.0"/>
+<text class="m" x="72" y="216.0" text-anchor="end">40%</text>
+<line class="grid" x1="80" y1="168.0" x2="700" y2="168.0"/>
+<text class="m" x="72" y="172.0" text-anchor="end">60%</text>
+<line class="grid" x1="80" y1="124.0" x2="700" y2="124.0"/>
+<text class="m" x="72" y="128.0" text-anchor="end">80%</text>
+<line class="grid" x1="80" y1="80.0" x2="700" y2="80.0"/>
+<text class="m" x="72" y="84.0" text-anchor="end">100%</text>
+<line class="grid" x1="80.0" y1="80" x2="80.0" y2="300"/>
+<text class="m" x="80.0" y="318" text-anchor="middle">0%</text>
+<line class="grid" x1="204.0" y1="80" x2="204.0" y2="300"/>
+<text class="m" x="204.0" y="318" text-anchor="middle">10%</text>
+<line class="grid" x1="328.0" y1="80" x2="328.0" y2="300"/>
+<text class="m" x="328.0" y="318" text-anchor="middle">20%</text>
+<line class="grid" x1="452.0" y1="80" x2="452.0" y2="300"/>
+<text class="m" x="452.0" y="318" text-anchor="middle">30%</text>
+<line class="grid" x1="576.0" y1="80" x2="576.0" y2="300"/>
+<text class="m" x="576.0" y="318" text-anchor="middle">40%</text>
+<line class="grid" x1="700.0" y1="80" x2="700.0" y2="300"/>
+<text class="m" x="700.0" y="318" text-anchor="middle">50%</text>
+<line class="axis" x1="80" y1="300" x2="700" y2="300"/>
+<line class="axis" x1="80" y1="80" x2="80" y2="300"/>
+<text class="s" x="390.0" y="352" text-anchor="middle">hot set size, % of nodes</text>
+<text class="s" x="18" y="190.0" text-anchor="middle" transform="rotate(-90 18 190.0)">share of held-out expansions served by the hot set</text>
+<polyline points="81.2,287.4 92.4,268.3 104.8,252.7 142.0,214.7 204.0,176.7 328.0,113.5 452.0,80.0 700.0,80.0" fill="none" stroke="var(--gray)" stroke-width="2.2" stroke-dasharray="5 4"/>
+<line x1="450" y1="66" x2="474" y2="66" stroke="var(--gray)" stroke-width="2.2" stroke-dasharray="5 4"/>
+<text class="s" x="480" y="70">oracle (ranked on the test queries)</text>
+<polyline points="81.2,288.4 92.4,279.7 104.8,272.1 142.0,253.7 204.0,229.2 328.0,192.1 452.0,164.4 700.0,124.5" fill="none" stroke="var(--orange)" stroke-width="2.2"/>
+<line x1="450" y1="83" x2="474" y2="83" stroke="var(--orange)" stroke-width="2.2"/>
+<text class="s" x="480" y="87">frequency (200k sampled base queries)</text>
+<polyline points="81.2,291.1 92.4,285.9 104.8,281.4 142.0,269.9 204.0,254.0 328.0,226.0 452.0,201.5 700.0,159.8" fill="none" stroke="var(--aqua)" stroke-width="2.2"/>
+<line x1="450" y1="100" x2="474" y2="100" stroke="var(--aqua)" stroke-width="2.2"/>
+<text class="s" x="480" y="104">in-degree (hubs)</text>
+<polyline points="81.2,290.8 92.4,287.4 104.8,285.3 142.0,278.3 204.0,268.5 328.0,245.6 452.0,221.1 700.0,163.8" fill="none" stroke="var(--purple)" stroke-width="2.2"/>
+<line x1="450" y1="117" x2="474" y2="117" stroke="var(--purple)" stroke-width="2.2"/>
+<text class="s" x="480" y="121">out-degree</text>
+<polyline points="81.2,290.5 92.4,288.3 104.8,285.2 142.0,280.8 204.0,271.8 328.0,256.1 452.0,237.5 700.0,204.2" fill="none" stroke="var(--blue)" stroke-width="2.2"/>
+<line x1="450" y1="134" x2="474" y2="134" stroke="var(--blue)" stroke-width="2.2"/>
+<text class="s" x="480" y="138">BFS levels from the medoid (DiskANN)</text>
+<polyline points="81.2,299.8 92.4,297.8 104.8,295.6 142.0,289.2 204.0,278.4 328.0,257.1 452.0,235.2 700.0,191.3" fill="none" stroke="var(--red)" stroke-width="2.2"/>
+<line x1="450" y1="151" x2="474" y2="151" stroke="var(--red)" stroke-width="2.2"/>
+<text class="s" x="480" y="155">random</text>
+</svg>

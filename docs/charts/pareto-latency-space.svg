@@ -1,0 +1,62 @@
+<svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Search latency vs graph space per adjacency store">
+<style>
+:root{--ink:#0b0b0b;--sec:#52514e;--mut:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--blue:#2a78d6;--orange:#eb6834;--aqua:#1baf7a;--gray:#898781;--purple:#8a5cd6;--red:#d63a3a}
+@media (prefers-color-scheme: dark){:root{--ink:#ffffff;--sec:#c3c2b7;--grid:#2c2c2a;--axis:#383835;--blue:#3987e5;--orange:#d95926;--aqua:#199e70;--purple:#9b74e0;--red:#e05252}}
+text{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.t{fill:var(--ink);font-size:15px;font-weight:600}
+.s{fill:var(--sec);font-size:12.5px}
+.m{fill:var(--mut);font-size:12px}
+.v{fill:var(--ink);font-size:12px}
+.grid{stroke:var(--grid);stroke-width:1}
+.axis{stroke:var(--axis);stroke-width:1}
+</style>
+
+<text class="t" x="16" y="28">Search latency vs graph space per adjacency store</text>
+<text class="s" x="16" y="48">SIFT-1M, DiskANN R=32, BFS labeling, single thread; latency interpolated at recall@10 = 0.97</text>
+<line class="grid" x1="80" y1="300.0" x2="700" y2="300.0"/>
+<text class="m" x="72" y="304.0" text-anchor="end">0</text>
+<line class="grid" x1="80" y1="258.3" x2="700" y2="258.3"/>
+<text class="m" x="72" y="262.3" text-anchor="end">50</text>
+<line class="grid" x1="80" y1="216.7" x2="700" y2="216.7"/>
+<text class="m" x="72" y="220.7" text-anchor="end">100</text>
+<line class="grid" x1="80" y1="175.0" x2="700" y2="175.0"/>
+<text class="m" x="72" y="179.0" text-anchor="end">150</text>
+<line class="grid" x1="80" y1="133.4" x2="700" y2="133.4"/>
+<text class="m" x="72" y="137.4" text-anchor="end">200</text>
+<line class="grid" x1="80" y1="91.7" x2="700" y2="91.7"/>
+<text class="m" x="72" y="95.7" text-anchor="end">250</text>
+<line class="grid" x1="80.0" y1="80" x2="80.0" y2="300"/>
+<text class="m" x="80.0" y="318" text-anchor="middle">16</text>
+<line class="grid" x1="204.0" y1="80" x2="204.0" y2="300"/>
+<text class="m" x="204.0" y="318" text-anchor="middle">20</text>
+<line class="grid" x1="328.0" y1="80" x2="328.0" y2="300"/>
+<text class="m" x="328.0" y="318" text-anchor="middle">24</text>
+<line class="grid" x1="452.0" y1="80" x2="452.0" y2="300"/>
+<text class="m" x="452.0" y="318" text-anchor="middle">28</text>
+<line class="grid" x1="576.0" y1="80" x2="576.0" y2="300"/>
+<text class="m" x="576.0" y="318" text-anchor="middle">32</text>
+<line class="grid" x1="700.0" y1="80" x2="700.0" y2="300"/>
+<text class="m" x="700.0" y="318" text-anchor="middle">36</text>
+<line class="axis" x1="80" y1="300" x2="700" y2="300"/>
+<line class="axis" x1="80" y1="80" x2="80" y2="300"/>
+<text class="s" x="390.0" y="352" text-anchor="middle">graph space, bits/edge (incl. offsets) — smaller is better</text>
+<text class="s" x="18" y="190.0" text-anchor="middle" transform="rotate(-90 18 190.0)">latency at recall@10 = 0.97, µs</text>
+<circle cx="647.3" cy="166.5" r="5.5" fill="var(--blue)"/>
+<text class="v" x="655.3" y="170.5">raw CSR</text>
+<circle cx="761.2" cy="159.8" r="5.5" fill="var(--blue)"/>
+<text class="v" x="769.2" y="175.8">packed (DiskANN layout)</text>
+<circle cx="147.5" cy="108.7" r="5.5" fill="var(--orange)"/>
+<text class="v" x="155.5" y="112.7">U-GEF</text>
+<circle cx="146.2" cy="163.0" r="5.5" fill="var(--aqua)"/>
+<text class="v" x="154.2" y="167.0">row EF</text>
+<circle cx="114.0" cy="159.3" r="5.5" fill="var(--aqua)"/>
+<text class="v" x="122.0" y="151.3">row BIC</text>
+<circle cx="197.5" cy="165.9" r="5.5" fill="var(--aqua)"/>
+<text class="v" x="205.5" y="181.9">row packed gaps</text>
+<circle cx="205.3" cy="128.1" r="5.5" fill="var(--purple)"/>
+<text class="v" x="213.3" y="132.1">hybrid 10% hot + U-GEF</text>
+<circle cx="258.7" cy="134.2" r="5.5" fill="var(--purple)"/>
+<text class="v" x="266.7" y="138.2">hybrid 20% hot + U-GEF</text>
+<circle cx="198.3" cy="161.0" r="5.5" fill="var(--purple)"/>
+<text class="v" x="206.3" y="177.0">hybrid 10% hot + row EF</text>
+</svg>
