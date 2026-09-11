@@ -1,2 +1,5 @@
 venv
 build
+scripts/__pycache__/
+.claude/
+.DS_Store
