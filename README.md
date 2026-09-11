@@ -9,8 +9,9 @@ compressed in C++ with the **U-GEF** algorithm from the
 library. The program measures the compression ratio and verifies that every
 adjacency list reconstructs exactly.
 
-Results for SIFT-1M are summarized in [REPORT.md](REPORT.md); the
-experiment history and open directions live in
+Results (compression, search-time cost of the compressed graph, and
+caching policies, on SIFT-1M and GloVe-100) are summarized in
+[REPORT.md](REPORT.md); the experiment history and open directions live in
 [RESEARCH_LOG.md](RESEARCH_LOG.md).
 
 ## Repository layout
@@ -25,6 +26,17 @@ experiment history and open directions live in
 | [scripts/hnsw-index.py](scripts/hnsw-index.py) | Alternative graph builder: faiss HNSW, exports the base layer as CSR |
 | [scripts/run_experiments.py](scripts/run_experiments.py) | Sweep driver: every relabeling × every graph → JSON + markdown results |
 | [scripts/export_nsg_graph.py](scripts/export_nsg_graph.py) | CSR export for the faiss NSG graph |
+| [src/search_bench.cpp](src/search_bench.cpp) | Beam-search benchmark over raw / packed / U-GEF / per-row-codec / two-tier stores, with recall, latency, per-node access profiling and optional navigation layers |
+| [src/row_codecs.hpp](src/row_codecs.hpp) | Per-row codecs (row Elias-Fano, binary interpolative, bit-packed gaps) used as access-time baselines |
+| [src/rowbench.cpp](src/rowbench.cpp) | Row-decoding microbenchmark (raw vs U-GEF partition sizes vs per-row codecs) |
+| [scripts/export_vectors.py](scripts/export_vectors.py) | Dumps base/query vectors and ground truth from the HDF5 to DiskANN-style .fbin/.ibin |
+| [scripts/sample_base_queries.py](scripts/sample_base_queries.py) | Sampled base vectors as a workload-free query set for access profiling |
+| [scripts/hotness_analysis.py](scripts/hotness_analysis.py) | Access-skew statistics and equal-budget hit rates of caching policies (frequency, BFS levels, degree, random, oracle) |
+| [scripts/make_hot_labeling.py](scripts/make_hot_labeling.py) | Hot-first relabeling for the two-tier store |
+| [scripts/build_hierarchy.py](scripts/build_hierarchy.py) | Random / in-degree / frequency navigation layers over a base graph |
+| [scripts/summarize_results.py](scripts/summarize_results.py), [scripts/make_charts.py](scripts/make_charts.py) | Result tables and SVG charts from `results/*.json` |
+| `results/` | JSON output of every timed run reported in REPORT.md |
+| [docs/lit/](docs/lit/) | Literature notes (disk-ANN caching, HNSW/hubs/biased skip lists, Ferragina + graph compression, in-memory ANN memory budget) |
 | [external/gef](external/gef) | Git submodule: the GEF compression library (C++20) |
 | `data/` | Datasets, indexes, and exported graphs (git-ignored) |
 
@@ -139,6 +151,16 @@ decompress to exactly the original input; and writes `graph_offsets.gef` /
   member-name typo in `louds_tree.hpp` (`m_select1` → `m_bv_select1`) that
   strict AppleClang rejects; it is patched in the fetched sources under
   `build/_deps` after the first configure. Neither affects Linux/GCC builds.
+
+### 4. Search-time and caching experiments
+
+`search_bench`, `rowbench` and the profiling/labeling scripts are built by
+the same CMake project (`cmake --build build`). The command sequence that
+produced Parts II–III of REPORT.md (vector export, access profiling with
+sampled base vectors, policy analysis, hot-first labelings, two-tier and
+row-codec stores, navigation layers) is listed at the end of
+[REPORT.md](REPORT.md#reproducing); every timed run writes a JSON file to
+`results/` and `scripts/summarize_results.py` turns them into the tables.
 
 ## What main.cpp measures
 
